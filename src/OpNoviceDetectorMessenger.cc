@@ -4,12 +4,10 @@
 OpNoviceDetectorMessenger::OpNoviceDetectorMessenger(OpNoviceDetectorConstruction* detector):
     fDet(detector)
 {
-    G4cout << "Detector messenger constructed" << G4endl;
-    fChangeSize = new G4UIdirectory("/changeSize/");
-    fChangeSize -> SetGuidance("Change size of WOM box");
+    fWOMdir = new G4UIdirectory("/WOMdir/");
+    fWOMdir -> SetGuidance("Change size of WOM box");
 
-    boxWidthCmd = new G4UIcmdWithADoubleAndUnit("/changeSize/boxWidthCmd", this);
-
+    boxWidthCmd = new G4UIcmdWithADoubleAndUnit("/WOMdir/boxWidthCmd", this);
     boxWidthCmd->SetGuidance("Set new width of the WOM box (in z)");
     boxWidthCmd->SetParameterName("SteelZ", false);
     boxWidthCmd->SetUnitCategory("Length");
@@ -18,17 +16,29 @@ OpNoviceDetectorMessenger::OpNoviceDetectorMessenger(OpNoviceDetectorConstructio
     boxWidthCmd->SetDefaultUnit("mm");
     boxWidthCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
+    updateGeoCmd = new G4UIcmdWithoutParameter("/WOMdir/updateGeo",this);
+    updateGeoCmd->SetGuidance("Update Geometry");
+    updateGeoCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+
 }
 
 OpNoviceDetectorMessenger::~OpNoviceDetectorMessenger()
 {
     delete boxWidthCmd;
+    delete updateGeoCmd;
 }
 
 void OpNoviceDetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
 {
-    G4cout << "Command name is: " << command->GetCommandName() << "; Commande value is " << newValue << G4endl;
     if( command == boxWidthCmd )
-       { fDet->SetBoxWidth(boxWidthCmd->GetNewDoubleValue(newValue)); }
+    {
+        fDet->SetBoxWidth(boxWidthCmd->GetNewDoubleValue(newValue));
+    }
+
+    if( command == updateGeoCmd )
+    {
+        fDet->UpdateGeometry();
+    }
 }
 

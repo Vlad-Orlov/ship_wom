@@ -52,7 +52,6 @@
 
 #include "WLSPhysicsList.hh"
 #include "OpNoviceDetectorConstruction.hh"
-
 #include "OpNoviceActionInitialization.hh"
 
 // Next 2 lines are necessary to provide different random numbers simulation:

@@ -59,6 +59,7 @@ class OpNoviceDetectorConstruction : public G4VUserDetectorConstruction
     void DefineLogicalVolumes();
     void DefineVisAttributes();
     void ConstructVolumes();
+    void UpdateGeometry();
     void SetBoxWidth(G4double);
     virtual G4VPhysicalVolume* Construct();
     virtual ~OpNoviceDetectorConstruction();

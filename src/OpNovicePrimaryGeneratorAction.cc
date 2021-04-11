@@ -48,6 +48,7 @@ const OpNovicePrimaryGeneratorAction* OpNovicePrimaryGeneratorAction::Instance()
 
   return fgInstance;
 }
+
 OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction()
 : G4VUserPrimaryGeneratorAction()
 {
@@ -55,11 +56,11 @@ OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction()
   fgInstance = this;
   // fGunMessenger = new OpNovicePrimaryGeneratorMessenger(this);
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-   G4ParticleDefinition* particle = particleTable->FindParticle("e-");
+  G4ParticleDefinition* particle = particleTable->FindParticle("e-");
 
    pgun->SetParticleDefinition(particle);
    pgun->SetParticleTime(0.0*ns);
-
+   pgun->SetParticlePosition(G4ThreeVector(32.5*mm,0.0*cm,0.0*cm));
 }
 OpNovicePrimaryGeneratorAction::~OpNovicePrimaryGeneratorAction()
 {
@@ -69,14 +70,14 @@ OpNovicePrimaryGeneratorAction::~OpNovicePrimaryGeneratorAction()
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-/*oid OpNovicePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
+ void OpNovicePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-	pgun->GeneratePrimaryVertex(anEvent);
+    pgun->GeneratePrimaryVertex(anEvent);
 }
 
-
+/*
 OpNovicePrimaryGeneratorAction::OpNovicePrimaryGeneratorAction()
- : G4VUserPrimaryGeneratorAction(), 
+ : G4VUserPrimaryGeneratorAction(),
    fParticleGun(0)
 {
   G4int n_particle = 1;
@@ -107,10 +108,10 @@ OpNovicePrimaryGeneratorAction::~OpNovicePrimaryGeneratorAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 */
-void OpNovicePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
-{
-	pgun->GeneratePrimaryVertex(anEvent);
-}
+//void OpNovicePrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
+//{
+//	pgun->GeneratePrimaryVertex(anEvent);
+//}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

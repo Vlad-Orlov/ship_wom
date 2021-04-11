@@ -5,6 +5,7 @@
 #include "G4UImessenger.hh"
 #include "G4UIcmdWithADoubleAndUnit.hh"
 #include "G4UIcmdWithADouble.hh"
+#include "G4UIcmdWithoutParameter.hh"
 #include "OpNoviceDetectorConstruction.hh"
 
 class G4UIdirectory;
@@ -24,7 +25,8 @@ public:
 
 private:
     OpNoviceDetectorConstruction* fDet;
-    G4UIdirectory* fChangeSize;
+    G4UIdirectory* fWOMdir;
+    G4UIcmdWithoutParameter* updateGeoCmd;
     G4UIcmdWithADoubleAndUnit* boxWidthCmd;
 };
 

@@ -157,14 +157,16 @@ void OpNoviceSteppingAction::UserSteppingAction(const G4Step* aStep)
     {
       analysisManager->FillNtupleDColumn(0,0, aStep -> GetPostStepPoint() -> GetPosition().getX() );
       analysisManager->FillNtupleDColumn(0,1, aStep -> GetPostStepPoint() -> GetPosition().getY() );
-      analysisManager->FillNtupleIColumn(0,2, process );
-      analysisManager->FillNtupleIColumn(0,3, post_copynum );
+      analysisManager->FillNtupleDColumn(0,2, aStep -> GetPostStepPoint() -> GetPosition().getZ() );
+      analysisManager->FillNtupleIColumn(0,3, process );
+      analysisManager->FillNtupleIColumn(0,4, post_copynum );
       // analysisManager->FillNtupleIColumn(0,2, parentid );
       // analysisManager->FillNtupleIColumn(0,3, trackid);
-      analysisManager->FillNtupleDColumn(0,4, 1.24e-3 / track -> GetKineticEnergy());
-      analysisManager->FillNtupleDColumn(0,5, track -> GetGlobalTime() );
-      analysisManager->FillNtupleIColumn(0,6, sipm_detection(1.24e-3 / track -> GetKineticEnergy()));
-      analysisManager->FillNtupleIColumn(0,7, eventNumber);
+      analysisManager->FillNtupleDColumn(0,5, 1.24e-3 / track -> GetKineticEnergy());
+      analysisManager->FillNtupleDColumn(0,6, track -> GetGlobalTime() );
+      analysisManager->FillNtupleIColumn(0,7, sipm_detection(1.24e-3 / track -> GetKineticEnergy()));
+      analysisManager->FillNtupleIColumn(0,8, eventNumber);
+
       analysisManager->AddNtupleRow(0);
       track->SetTrackStatus(fStopAndKill);
     }

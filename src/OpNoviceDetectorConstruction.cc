@@ -76,7 +76,7 @@ OpNoviceDetectorConstruction::OpNoviceDetectorConstruction()
   WallThickness_Z_Cover = 5*mm;
   SctX = SteelX - 2*WallThickness_XY;
   SctY = SteelY - 2*WallThickness_XY;
-//  SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
+  SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
     
   Additional_Length = 0.*mm;
     
@@ -470,6 +470,7 @@ void OpNoviceDetectorConstruction::DefineSolids()
   sipm_base  = new G4Tubs("sipm_base", Diam_WOM_In/2 - Thickness_WLS , Diam_WOM_Out/2 + Thickness_WLS, sipmbasewidth/2, 0, 360*deg);
   //-------------------------------------------------------------------
   //Scintillator box
+  //SctZ must be defined here, and not in the constructor of the class for DetectorMessenger to work properly.
   SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
 
   ScintilatorBox = new G4Box("ScintilatorBox",SctX/2,SctY/2,SctZ/2);
@@ -674,15 +675,6 @@ void OpNoviceDetectorConstruction::ConstructVolumes()
   }
 }
 
-void OpNoviceDetectorConstruction::SetBoxWidth(G4double boxWidth)
-{
-    SteelZ = boxWidth;
-    G4cout << "The new width of WOM box is" << boxWidth << " mm." << G4endl;
-
-    G4RunManager::GetRunManager()->DefineWorldVolume(Construct());
-    G4RunManager::GetRunManager()->ReinitializeGeometry();}
-
-
 void OpNoviceDetectorConstruction::DefineVisAttributes(){
     G4Color blue        = G4Color(0., 0., 1.);
     G4Color grey        = G4Color(0.3, 0.3, 0.3);
@@ -721,6 +713,18 @@ void OpNoviceDetectorConstruction::DefineVisAttributes(){
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+
+void OpNoviceDetectorConstruction::SetBoxWidth(G4double boxWidth)
+{
+    SteelZ = boxWidth;
+    G4cout << "The new width of WOM box is: " << boxWidth << " mm." << G4endl;
+}
+
+void OpNoviceDetectorConstruction::UpdateGeometry(){
+    G4RunManager::GetRunManager()->DefineWorldVolume(Construct());
+    G4cout << "Geometry updated" << G4endl;
+}
 
 G4VPhysicalVolume* OpNoviceDetectorConstruction::Construct()
 {
