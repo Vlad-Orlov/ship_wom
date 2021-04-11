@@ -59,6 +59,7 @@ class OpNoviceDetectorConstruction : public G4VUserDetectorConstruction
     void DefineLogicalVolumes();
     void DefineVisAttributes();
     void ConstructVolumes();
+    void SetBoxWidth(G4double);
     virtual G4VPhysicalVolume* Construct();
     virtual ~OpNoviceDetectorConstruction();
     G4bool intersect_check;
@@ -66,6 +67,7 @@ class OpNoviceDetectorConstruction : public G4VUserDetectorConstruction
     std::vector<std::pair<G4double,G4double>>  WOM_coord_vec;
 
   private:
+    OpNoviceDetectorMessenger* fDetectorMessenger;
     G4double fExpHall_x;
     G4double fExpHall_y;
     G4double fExpHall_z;

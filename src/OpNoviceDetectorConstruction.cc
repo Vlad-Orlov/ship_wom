@@ -28,7 +28,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #include "OpNoviceDetectorConstruction.hh"
-// #include "OpNoviceDetectorMessenger.hh"s
+#include "OpNoviceDetectorMessenger.hh"
 #include "G4Material.hh"
 #include "G4Element.hh"
 #include "G4NistManager.hh"
@@ -58,22 +58,25 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 OpNoviceDetectorConstruction::OpNoviceDetectorConstruction()
- : G4VUserDetectorConstruction()
+ : G4VUserDetectorConstruction(), fDetectorMessenger(0), SteelZ(0), SctZ(0)
 {
+
+  fDetectorMessenger = new OpNoviceDetectorMessenger(this);
+
   fExpHall_x = 0.8*m;
   fExpHall_y = 0.6*m;
   fExpHall_z = 0.5*m;
 
   SteelX = 120*cm;
   SteelY = 80*cm;
-  SteelZ = 335*mm;
-//  SteelZ = 135*mm;
+//  SteelZ = 335*mm;
+  SteelZ = 335.*mm;
   WallThickness_XY = 10*mm;
   WallThickness_Z_Bottom = 20*mm;
   WallThickness_Z_Cover = 5*mm;
   SctX = SteelX - 2*WallThickness_XY;
   SctY = SteelY - 2*WallThickness_XY;
-  SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
+//  SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
     
   Additional_Length = 0.*mm;
     
@@ -116,6 +119,7 @@ OpNoviceDetectorConstruction::OpNoviceDetectorConstruction()
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 OpNoviceDetectorConstruction::~OpNoviceDetectorConstruction(){
+    delete fDetectorMessenger;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -458,12 +462,16 @@ void OpNoviceDetectorConstruction::DefineSurfaces()
 
 void OpNoviceDetectorConstruction::DefineSolids()
 {
+
+
   expHall_box = new G4Box("World",fExpHall_x,fExpHall_y,fExpHall_z);
   //-------------------------------------------------------------------
   sipmbasewidth = 1*cm;
   sipm_base  = new G4Tubs("sipm_base", Diam_WOM_In/2 - Thickness_WLS , Diam_WOM_Out/2 + Thickness_WLS, sipmbasewidth/2, 0, 360*deg);
   //-------------------------------------------------------------------
   //Scintillator box
+  SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
+
   ScintilatorBox = new G4Box("ScintilatorBox",SctX/2,SctY/2,SctZ/2);
 //Steel box
   SteelBox = new G4Box("Steelbox",SteelX/2,SteelY/2,SteelZ/2);
@@ -665,6 +673,15 @@ void OpNoviceDetectorConstruction::ConstructVolumes()
     Sct_Inside_phys_vect.push_back(new G4PVPlacement(RM1, G4ThreeVector(WOM_coord_vec[pos].first, WOM_coord_vec[pos].second, delta_Z_Sct_Inside), Sct_Inside_log, "Sct_Inside", expHall_log, false, 0, intersect_check) );
   }
 }
+
+void OpNoviceDetectorConstruction::SetBoxWidth(G4double boxWidth)
+{
+    SteelZ = boxWidth;
+    G4cout << "The new width of WOM box is" << boxWidth << " mm." << G4endl;
+
+    G4RunManager::GetRunManager()->DefineWorldVolume(Construct());
+    G4RunManager::GetRunManager()->ReinitializeGeometry();}
+
 
 void OpNoviceDetectorConstruction::DefineVisAttributes(){
     G4Color blue        = G4Color(0., 0., 1.);
