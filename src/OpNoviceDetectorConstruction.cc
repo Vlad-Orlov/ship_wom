@@ -76,6 +76,7 @@ OpNoviceDetectorConstruction::OpNoviceDetectorConstruction()
   WallThickness_Z_Cover = 5*mm;
   SctX = SteelX - 2*WallThickness_XY;
   SctY = SteelY - 2*WallThickness_XY;
+  // SctZ is also defined in the DefineSolids() method for DetectorMessenger to work
   SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
     
   Additional_Length = 0.*mm;
@@ -470,6 +471,7 @@ void OpNoviceDetectorConstruction::DefineSolids()
   sipm_base  = new G4Tubs("sipm_base", Diam_WOM_In/2 - Thickness_WLS , Diam_WOM_Out/2 + Thickness_WLS, sipmbasewidth/2, 0, 360*deg);
   //-------------------------------------------------------------------
   //Scintillator box
+
   //SctZ must be defined here, and not in the constructor of the class for DetectorMessenger to work properly.
   SctZ = SteelZ - WallThickness_Z_Bottom - WallThickness_Z_Cover;
 
@@ -480,6 +482,12 @@ void OpNoviceDetectorConstruction::DefineSolids()
   G4double Rin, Rout;
   G4double delta_Z;
     
+//Tube length
+  Length_1 = 226*mm + Additional_Length;
+  Length_2 = 206*mm + Additional_Length;
+  Length_WOM = 230*mm + Additional_Length;
+
+
 //Outer tube
   Rin = Diam_Out_In/2;
   Rout = Diam_Out_Out/2;
@@ -718,11 +726,21 @@ void OpNoviceDetectorConstruction::DefineVisAttributes(){
 void OpNoviceDetectorConstruction::SetBoxWidth(G4double boxWidth)
 {
     SteelZ = boxWidth;
+    G4RunManager::GetRunManager()->GeometryHasBeenModified();
     G4cout << "The new width of WOM box is: " << boxWidth << " mm." << G4endl;
 }
 
+void OpNoviceDetectorConstruction::SetAddLength(G4double addLength)
+{
+    Additional_Length = addLength;
+    G4RunManager::GetRunManager()->GeometryHasBeenModified();
+    G4cout << "The new AddLength of WOM tube is: " << Additional_Length << " mm." << G4endl;
+}
+
 void OpNoviceDetectorConstruction::UpdateGeometry(){
+    G4RunManager::GetRunManager()->ReinitializeGeometry();
     G4RunManager::GetRunManager()->DefineWorldVolume(Construct());
+
     G4cout << "Geometry updated" << G4endl;
 }
 

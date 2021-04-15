@@ -28,6 +28,8 @@ private:
     G4UIdirectory* fWOMdir;
     G4UIcmdWithoutParameter* updateGeoCmd;
     G4UIcmdWithADoubleAndUnit* boxWidthCmd;
+    G4UIcmdWithADoubleAndUnit* addLengthCmd;
+
 };
 
 #endif // OPNOVICEDETECTORMESSENGER_HH

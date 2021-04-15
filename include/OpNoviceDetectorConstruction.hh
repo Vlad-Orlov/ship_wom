@@ -61,6 +61,7 @@ class OpNoviceDetectorConstruction : public G4VUserDetectorConstruction
     void ConstructVolumes();
     void UpdateGeometry();
     void SetBoxWidth(G4double);
+    void SetAddLength(G4double);
     virtual G4VPhysicalVolume* Construct();
     virtual ~OpNoviceDetectorConstruction();
     G4bool intersect_check;
