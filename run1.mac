@@ -1,7 +1,9 @@
-/analysis/setFileName adf.root
-/gps/particle mu+
-/gps/position 0 0 30 cm
+/WOMdir/boxWidthCmd 300 mm
+/WOMdir/addLengthCmd 0 mm
+#/WOMdir/updateGeo
+/analysis/setFileName test_300.root
+/gps/position 0 0 50 cm
 /gps/direction 0 0 -1
 /gps/ene/type Mono
 /gps/energy 1 GeV
-/run/beamOn 1
+/run/beamOn 10
