@@ -98,16 +98,30 @@ void OpNoviceSteppingAction::UserSteppingAction(const G4Step* aStep)
 
   if(aStep->GetTrack()->GetDynamicParticle()->GetParticleDefinition() == G4OpticalPhoton::OpticalPhotonDefinition())
   {
+
+    G4cout << "starting to collect info about the photon" << G4endl;
     G4Track* track = aStep->GetTrack();
+    G4cout << "Got the track" << G4endl;
 
     G4int stepnum=track->GetCurrentStepNumber();
+    G4cout << "Got the stepnumb" << G4endl;
+
     G4int parentid=track -> GetParentID();
+    G4cout << "Got the parentid" << G4endl;
+
 
 
     G4int trackid = track -> GetTrackID();
+    G4cout << "Got the trackid " << trackid << G4endl;
 
     G4int process = 0;
-    std::string processname = track->GetCreatorProcess()->GetProcessName();
+    std::string processname = "";
+
+    if (track->GetCreatorProcess()){
+        processname = track->GetCreatorProcess()->GetProcessName();
+    }
+
+    G4cout << "Process" << processname << G4endl;
 
     if(processname == "Scintillation")
       process = 1;
@@ -115,7 +129,7 @@ void OpNoviceSteppingAction::UserSteppingAction(const G4Step* aStep)
       process = 3;
     else if( processname == "Cerenkov")
       process = 2;
-    
+
     G4VPhysicalVolume* postvolumephys = NULL;
     postvolumephys = aStep->GetPostStepPoint()->GetPhysicalVolume();
     if(!postvolumephys) return;
@@ -126,6 +140,7 @@ void OpNoviceSteppingAction::UserSteppingAction(const G4Step* aStep)
     const G4VTouchable* posttouchable = NULL;
     posttouchable = aStep->GetPostStepPoint()->GetTouchable();
     if(!posttouchable) return;
+
 
     if(stepnum ==1)
     {

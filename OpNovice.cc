@@ -42,11 +42,11 @@
 
 
 
-#ifdef G4MULTITHREADED
-#include "G4MTRunManager.hh"
-#else
+//#ifdef G4MULTITHREADED
+//#include "G4MTRunManager.hh"
+//#else
 #include "G4RunManager.hh"
-#endif
+//#endif
 
 #include "G4UImanager.hh"
 
@@ -123,13 +123,13 @@ int main(int argc,char** argv)
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
 
   // Construct the default run manager
-  //
+  /*
 #ifdef G4MULTITHREADED
   G4MTRunManager * runManager = new G4MTRunManager;
   if ( nThreads > 0 ) runManager->SetNumberOfThreads(nThreads);
-#else
+#else*/
   G4RunManager * runManager = new G4RunManager;
-#endif
+//#endif
 
   G4String physName = "QGSP_BERT_HP";
 
